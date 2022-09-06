@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "username": "nsdjfnsdf",
+      "email": "jsfdnb@jor.com",
+      "password": "passoerd!@#1J",
+      "role": "user",
+      "id": 1
+    },
+    {
+      "username": "nsdjfnsdf",
+      "email": "jsfdnb@jor.com",
+      "password": "passoerd!@#1J",
+      "role": "user",
+      "id": 2
+    }
+  ]
+}
