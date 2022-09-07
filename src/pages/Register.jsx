@@ -16,6 +16,7 @@ import { axiosInstance } from "../api"
 
 const RegisterPage = () => {
   const toast = useToast()
+
   const formik = useFormik({
     initialValues: {
       username: "",

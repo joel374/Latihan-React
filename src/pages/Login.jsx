@@ -11,17 +11,37 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { useFormik } from "formik"
+import { useDispatch } from "react-redux"
 import * as Yup from "yup"
 import { axiosInstance } from "../api"
+import { login } from "../redux/features/authSlice"
 
 const LoginPage = () => {
   const toast = useToast()
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      try {
+        const response = await axiosInstance.get("/users", {
+          params: {
+            username: values.username,
+            password: values.password,
+          },
+        })
+
+        if (!response.data.length) {
+          toast({ title: "Credentials don't match", status: "error" })
+        }
+        localStorage.setItem("auth_data", response.data[0].id)
+        dispatch(login(response.data[0]))
+      } catch (error) {
+        console.log(error)
+      }
+    },
     validationSchema: Yup.object({
       username: Yup.string().required().min(3),
       password: Yup.string().required(),
