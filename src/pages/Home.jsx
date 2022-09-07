@@ -139,7 +139,7 @@ const HomePage = () => {
       >
         See More
       </Button>
-      <Stack></Stack>
+      <Stack>GitHUb</Stack>
     </Container>
   )
 }
