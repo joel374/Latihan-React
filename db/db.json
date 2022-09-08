@@ -18,7 +18,7 @@
       "username": "sasuke",
       "email": "sasuke@mail.com",
       "password": "Sasuke123!",
-      "role": "user",
+      "role": "admin",
       "id": 3
     },
     {
@@ -27,6 +27,13 @@
       "password": "Anto123!",
       "role": "user",
       "id": 4
+    },
+    {
+      "username": "Joel Legifani Manisali",
+      "email": "joellegfanimanisali@gmail.com",
+      "password": "Joel123!",
+      "role": "user",
+      "id": 5
     }
   ],
   "posts": [
@@ -83,6 +90,14 @@
       "image_url": "",
       "userId": 3,
       "id": 9
+    }
+  ],
+  "comments": [
+    {
+      "text": "",
+      "userId": 1,
+      "postId": 1,
+      "id": 1
     }
   ]
 }

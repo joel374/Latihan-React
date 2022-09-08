@@ -1,11 +1,18 @@
 import {
   Box,
   Button,
+  Container,
+  Grid,
+  GridItem,
+  useDisclosure,
+  MenuItem,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
   Text,
+  useColorModeValue,
+  Icon,
+  Flex,
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -20,26 +27,37 @@ import LoginPage from "./pages/Login"
 import ProfilePage from "./pages/Profile"
 import RegisterPage from "./pages/Register"
 import NotFoundPage from "./pages/404"
-import { login, logout, logoutEmployee } from "./redux/features/authSlice"
+import { login, logout } from "./redux/features/authSlice"
+import { ChevronDownIcon, ChevronUpIcon, HamburgerIcon } from "@chakra-ui/icons"
+import MyPorfile from "./pages/MyPorfile"
+// import { HamburgerIcon } from "react-icons"
 
 const App = () => {
   const [authCheck, setAuthCheck] = useState(false)
+  const [loginBtn, setLoginBtn] = useState()
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const authSelector = useSelector((state) => state.auth)
+
   const dispatch = useDispatch()
+
   const keepUserLogin = async () => {
     try {
-      setAuthCheck(true)
       const auth_id = localStorage.getItem("auth_data")
 
       if (!auth_id) {
+        setAuthCheck(true)
         return
       }
 
       const response = await axiosInstance.get(`/users/${auth_id}`)
 
       dispatch(login(response.data))
+      setAuthCheck(true)
     } catch (error) {
       console.log(error)
+      setAuthCheck(true)
     }
   }
 
@@ -64,43 +82,100 @@ const App = () => {
   }, [])
 
   if (!authCheck) {
-    return <div>Loading....</div>
+    return <Text>Loading</Text>
   }
 
   return (
     <Box>
-      {/* NavBar */}
-      <Menu>
-        <MenuButton as={Button}>Navigasi</MenuButton>
-        <MenuList>
-          <MenuItem>
-            <Link to={"/"}>Home</Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to={"/profile"}>Profile</Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to={"/login"}>Login</Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to={"/register"}>Register</Link>
-          </MenuItem>
-        </MenuList>
-      </Menu>
-      {/* Akhir Navbar */}
-      <Text fontSize={"4xl"} fontWeight={"bold"}>
-        Hello {authSelector.username}
-      </Text>
-      <Button colorScheme={"red"} onClick={logoutBtnHandler}>
-        Logout
-      </Button>
+      <Grid
+        templateColumns={"repeat(3, 1fr)"}
+        gap="2"
+        p="3"
+        backgroundColor={"teal"}
+        color="white"
+      >
+        <GridItem w="auto" alignItems={"end"} padding="5px">
+          <Menu isOpen={isOpen}>
+            <MenuButton
+              // variant="ghost"
+              mx={1}
+              py={[1, 2, 2]}
+              px={4}
+              borderRadius={5}
+              // _hover={{ bg: "grey" }}
+              aria-label="Courses"
+              fontWeight="normal"
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+              // border={"3px solid white"}
+            >
+              <HamburgerIcon w={"6"} h={"6"} />
+              {/* {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />} */}
+            </MenuButton>
+            <MenuList
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+              color="black"
+            >
+              <MenuItem>
+                <Link to={"/"}>Home</Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to={"/profile"}>Profile</Link>
+              </MenuItem>
+              {/* <MenuItem>Menu Item 3</MenuItem> */}
+            </MenuList>
+          </Menu>
+        </GridItem>
+        <GridItem padding="1px">
+          <Text fontSize={"3xl"} fontWeight={"semibold"} textAlign="center">
+            Igeh
+          </Text>
+        </GridItem>
+        <GridItem display="flex" justifyContent={"end"} padding="7px">
+          <Text fontSize="2xl" marginRight={"10px"} fontWeight="semibold">
+            {authSelector.username}
+          </Text>
+          {authSelector.id ? null : (
+            <Button
+              colorScheme={"#008080"}
+              border={"3px solid white"}
+              // size={"lg"}
+            >
+              <Link to={"/login"}>Login</Link>
+            </Button>
+          )}
+          {!authSelector.id ? (
+            <Button
+              colorScheme={"#008080"}
+              border={"3px solid white"}
+              ml="10px"
+              // size={"lg"}
+            >
+              <Link to={"/register"}>Register</Link>
+            </Button>
+          ) : (
+            <Button
+              colorScheme={"#008080"}
+              border={"3px solid white"}
+              onClick={logoutBtnHandler}
+              // size={"lg"}
+            >
+              Logout
+            </Button>
+          )}
+        </GridItem>
+      </Grid>
+
+      {/* Routes */}
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/profile/:username" element={<ProfilePage />} />
         <Route
-          path="/profile"
+          path="/my-profile"
           element={
             <ProtectedRoute>
-              <ProfilePage />
+              <MyPorfile />
             </ProtectedRoute>
           }
         />
