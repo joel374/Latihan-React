@@ -3,9 +3,9 @@ import {
   Box,
   Container,
   HStack,
-  Image,
   Stack,
   Text,
+  useToast,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react"
@@ -17,11 +17,13 @@ import Post from "../component/Post"
 
 const ProfilePage = () => {
   const [posts, setPosts] = useState([])
-  const [page, setPage] = useState(1)
-  const authSelector = useSelector((state) => state.auth)
   const [user, setUser] = useState({})
 
+  const authSelector = useSelector((state) => state.auth)
+
   const params = useParams()
+
+  const toast = useToast()
 
   const fetchUserProfile = async () => {
     try {
@@ -35,29 +37,27 @@ const ProfilePage = () => {
       console.log(error)
     }
   }
-  useEffect(() => {
-    fetchUserProfile()
-  }, [])
 
-  //
-
-  const fetchPost = async () => {
+  const fetchPosts = async () => {
     try {
       const response = await axiosInstance.get("/posts", {
         params: {
-          _expand: "user",
-          _sort: "id",
-          _order: "desc",
-          _page: page,
           userId: user.id,
+          _expand: "user",
         },
       })
+      setPosts(response.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
-      if (page === 1) {
-        setPosts(response.data)
-      } else {
-        setPosts([...posts, ...response.data])
-      }
+  const deleteBtnHandler = async (id) => {
+    try {
+      await axiosInstance.delete(`/posts/${id}`)
+
+      fetchPosts()
+      toast({ title: "Post deleted", status: "info" })
     } catch (err) {
       console.log(err)
     }
@@ -72,14 +72,18 @@ const ProfilePage = () => {
           body={val.body}
           image_url={val.image_url}
           userId={val.userId}
+          onDelete={() => deleteBtnHandler(val.id)}
           postId={val.id}
-        ></Post>
+        />
       )
     })
   }
 
   useEffect(() => {
-    fetchPost()
+    fetchUserProfile()
+  }, [])
+  useEffect(() => {
+    fetchPosts()
   }, [user.id])
 
   if (params.username === authSelector.username) {

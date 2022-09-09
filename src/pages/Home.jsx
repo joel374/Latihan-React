@@ -27,12 +27,11 @@ const HomePage = () => {
   const [page, setPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
 
   const authSelector = useSelector((state) => state.auth)
 
   const posting = () => {}
-
-  const toast = useToast()
 
   const formik = useFormik({
     initialValues: {

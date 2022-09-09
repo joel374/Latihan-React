@@ -121,7 +121,7 @@ const App = () => {
                 <Link to={"/"}>Home</Link>
               </MenuItem>
               <MenuItem>
-                <Link to={"/profile"}>Profile</Link>
+                <Link to={"/my-profile"}>My Profile</Link>
               </MenuItem>
               {/* <MenuItem>Menu Item 3</MenuItem> */}
             </MenuList>
