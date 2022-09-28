@@ -7,52 +7,114 @@ import {
   FormLabel,
   Heading,
   Input,
+  InputGroup,
+  InputRightElement,
   Stack,
   Text,
   useToast,
 } from "@chakra-ui/react"
+import { text } from "@fortawesome/fontawesome-svg-core"
 import { useFormik } from "formik"
+import { useState } from "react"
 import { useDispatch } from "react-redux"
 import * as Yup from "yup"
 import { axiosInstance } from "../api"
 import { login } from "../redux/features/authSlice"
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false)
+  const togglePassword = () => {
+    setShowPassword(!showPassword)
+  }
   const toast = useToast()
 
   const dispatch = useDispatch()
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      usernameOrEmail: "",
       password: "",
     },
-    onSubmit: async (values) => {
+    onSubmit: async ({ usernameOrEmail, password }) => {
       try {
-        const response = await axiosInstance.get("/users", {
-          params: {
-            username: values.username,
-            password: values.password,
-          },
+<<<<<<< Updated upstream
+=======
+        // const response = await axiosInstance.get("/users", {
+        //   params: {
+        //     usernameOrEmail: values.usernameOrEmail,
+        //     password: values.password,
+        //   },
+        // })
+        // if (!response.data.length) {
+        //   toast({
+        //     position: "top",
+        //     title: "Credentials don't match",
+        //     status: "error",
+        //   })
+        //   return
+        // }
+
+>>>>>>> Stashed changes
+        const response = await axiosInstance.post("/auth/login", {
+          usernameOrEmail,
+          password,
         })
 
-        if (!response.data.length) {
-          toast({
-            position: "top",
-            title: "Credentials don't match",
-            status: "error",
-          })
-          return
-        }
+<<<<<<< Updated upstream
+        // if (!response.data.length) {
+        //   toast({
+        //     position: "top",
+        //     title: "Credentials don't match",
+        //     status: "error",
+        //   })
+        //   return
+        // }
 
-        localStorage.setItem("auth_data", response.data[0].id)
-        dispatch(login(response.data[0]))
+        localStorage.setItem("auth_token", response.data.token)
+        dispatch(
+          login({
+            username: response.data.data.username,
+            email: response.data.data.email,
+            id: response.data.data.id,
+          })
+        )
+        toast({
+          title: "Login successful",
+=======
+        localStorage.setItem("auth_token", response.data.token)
+        dispatch(
+          login({
+            username: response.data.data.username,
+            email: response.data.data.email,
+            id: response.data.data.id,
+          })
+        )
+
+        toast({
+          position: "top",
+          title: "Registration Success",
+>>>>>>> Stashed changes
+          description: response.data.message,
+          status: "success",
+        })
       } catch (error) {
         console.log(error)
+        toast({
+<<<<<<< Updated upstream
+          status: "error",
+          title: "Login failed",
+          description: error.response.data.message,
+=======
+          position: "top",
+          title: "Registration Failed",
+          description: error.response.data.message,
+          status: "error",
+>>>>>>> Stashed changes
+        })
       }
     },
     validationSchema: Yup.object({
-      username: Yup.string().required().min(3),
+      usernameOrEmail: Yup.string().required().min(3),
       password: Yup.string().required(),
     }),
     validateOnChange: false,
@@ -72,23 +134,36 @@ const LoginPage = () => {
         <Box padding="6" width={"600px"} mx={"auto"}>
           <form onSubmit={formik.handleSubmit}>
             <Stack>
-              <FormControl isInvalid={formik.errors.username}>
-                <FormLabel>Username</FormLabel>
+              <FormControl isInvalid={formik.errors.usernameOrEmail}>
+<<<<<<< Updated upstream
+                <FormLabel>Username Or Email</FormLabel>
+=======
+                <FormLabel>usernameOrEmail</FormLabel>
+>>>>>>> Stashed changes
                 <Input
-                  value={formik.values.username}
-                  name="username"
+                  value={formik.values.usernameOrEmail}
+                  name="usernameOrEmail"
                   onChange={formChangeHandler}
                 />
-                <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                <FormErrorMessage>
+                  {formik.errors.usernameOrEmail}
+                </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={formik.errors.password}>
                 <FormLabel>Password </FormLabel>
-                <Input
-                  value={formik.values.password}
-                  name="password"
-                  onChange={formChangeHandler}
-                  type={"password"}
-                />
+                <InputGroup>
+                  <Input
+                    value={formik.values.password}
+                    name="password"
+                    onChange={formChangeHandler}
+                    type={showPassword ? "text" : "password"}
+                  />
+                  <InputRightElement width="56px" mr="4px">
+                    <Button onClick={togglePassword} height="28px" size="sm">
+                      {showPassword ? "Hide" : "Show"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
               <Box py={"3"}>

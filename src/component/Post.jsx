@@ -28,6 +28,7 @@ import * as Yup from "yup"
 import { axiosInstance } from "../api"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import "../App.css"
 
 const Post = ({
   username,
@@ -108,7 +109,7 @@ const Post = ({
         <HStack justifyContent={"space-between"}>
           <HStack>
             <Avatar size="md" name={username} src={profile_picture} />
-            <Text fontSize="sm" fontWeight="extrabold">
+            <Text fontSize="sm" fontWeight="bold">
               <Link to={`/profile/${username}`}>{username || "Username"}</Link>
             </Text>
           </HStack>
@@ -126,6 +127,7 @@ const Post = ({
         </HStack>
 
         <Image
+          className="mobilePost"
           borderRadius="4px"
           height="auto"
           width="100%"
@@ -138,7 +140,7 @@ const Post = ({
         />
         <HStack fontSize="sm" mt={"4"}>
           <Link to={`/profile/${username}`}>
-            <Text fontWeight="extrabold" display={"inline"}>
+            <Text fontWeight="bold" display={"inline"}>
               {username || "Username"}
             </Text>
           </Link>
@@ -150,7 +152,7 @@ const Post = ({
         <Text fontWeight={"light"} fontSize={"sm"}>
           Comments
         </Text>
-        <Stack>{renderComments()}</Stack>
+        <Stack>{/* {renderComments()} */}</Stack>
         <form onSubmit={formik.handleSubmit}>
           <HStack mt={"3"}>
             <Input

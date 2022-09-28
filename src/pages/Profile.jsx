@@ -91,36 +91,42 @@ const ProfilePage = () => {
   }
 
   return (
-    <Box backgroundColor={"#fafafa"}>
-      <Container maxW={"container.md"} py="4" pb={"10"}>
-        <Text fontSize={"4xl"} fontWeight={"light"}>
-          Profile
-        </Text>
-        <Box mt={"4"}>
-          <Stack>
-            <HStack gap={"10"}>
-              <Wrap>
-                <WrapItem>
-                  <Avatar
-                    size="2xl"
-                    name={user.username}
-                    // src="https://images.unsplash.com/photo-1508185140592-283327020902?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-                  />
-                </WrapItem>
-              </Wrap>
-              <Stack>
-                <Text fontSize={"3xl"} fontWeight="bold">
-                  {user.username}
-                </Text>
-                <Text fontSize={"2xl"}>{user.email}</Text>
-                <Text fontSize={"2xl"} fontWeight="light">
-                  {user.role}
-                </Text>
-              </Stack>
-            </HStack>
-          </Stack>
-          <Stack>{renderPosts()}</Stack>
+    <Box backgroundColor={"#fafafa"} mt={"23"}>
+      <Container maxW={"container.md"} py="4" pb={"10"} mt="4">
+        <Box
+          borderColor={"gray.300"}
+          borderWidth="1px"
+          p={"6"}
+          borderRadius={"8px"}
+        >
+          <Box mt={"4"}>
+            <Stack>
+              <HStack gap={"10"}>
+                <Wrap>
+                  <WrapItem>
+                    <Avatar
+                      size="2xl"
+                      name={user.username}
+                      // src="https://images.unsplash.com/photo-1508185140592-283327020902?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                    />
+                  </WrapItem>
+                </Wrap>
+                <Stack>
+                  <Text fontSize={"3xl"} fontWeight="bold">
+                    {user.username}
+                  </Text>
+                  <Text fontSize={"2xl"}>{user.email}</Text>
+                  <Text fontSize={"2xl"} fontWeight="light">
+                    {user.role}
+                  </Text>
+                </Stack>
+              </HStack>
+            </Stack>
+          </Box>
         </Box>
+        <Stack mt={"5"} spacing="5">
+          {renderPosts()}
+        </Stack>
       </Container>
     </Box>
   )

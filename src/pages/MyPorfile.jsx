@@ -33,6 +33,8 @@ const MyProfile = () => {
         params: {
           userId: authSelector.id,
           _expand: "user",
+          _sort: "id",
+          _order: "desc",
         },
       })
 
@@ -60,7 +62,7 @@ const MyProfile = () => {
           key={val.id.toString()}
           username={val.user.username}
           body={val.body}
-          imageUrl={val.image_url}
+          image_url={val.image_url}
           userId={val.userId}
           onDelete={() => deleteBtnHandler(val.id)}
           postId={val.id}
@@ -142,9 +144,6 @@ const MyProfile = () => {
           p={"6"}
           borderRadius={"8px"}
         >
-          <Text fontSize={"4xl"} fontWeight={"light"}>
-            My Profile
-          </Text>
           <Box mt={"4"}>
             <Stack>
               <HStack gap={"10"}>
@@ -212,7 +211,7 @@ const MyProfile = () => {
           </Box>
         </Box>
 
-        <Stack mt={"8"} spacing="2">
+        <Stack mt={"5"} spacing="5">
           {renderPosts()}
         </Stack>
       </Container>

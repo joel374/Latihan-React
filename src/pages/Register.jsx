@@ -7,15 +7,23 @@ import {
   FormLabel,
   Heading,
   Input,
+  InputGroup,
+  InputRightElement,
   Stack,
   Text,
   useToast,
 } from "@chakra-ui/react"
 import { useFormik } from "formik"
+import { useState } from "react"
 import * as Yup from "yup"
 import { axiosInstance } from "../api"
 
 const RegisterPage = () => {
+  const [showPassword, setShowPassword] = useState(false)
+  const togglePassword = () => {
+    setShowPassword(!showPassword)
+  }
+
   const toast = useToast()
 
   const formik = useFormik({
@@ -24,54 +32,116 @@ const RegisterPage = () => {
       email: "",
       password: "",
     },
-    onSubmit: async (values) => {
+    onSubmit: async ({ username, email, password }) => {
       try {
-        const emailResponse = await axiosInstance.get("./users", {
-          params: {
-            email: values.email,
-          },
+<<<<<<< Updated upstream
+        const response = await axiosInstance.post("./auth/register", {
+=======
+        // const emailResponse = await axiosInstance.get("./users", {
+        //   params: {
+        //     email: values.email,
+        //   },
+        // })
+
+        // if (emailResponse.data.length) {
+        //   toast({
+        //     position: "top",
+        //     title: "Email has alreardy been used",
+        //     status: "error",
+        //   })
+        //   return
+        // }
+
+        // const usernameResponse = await axiosInstance.get("./users", {
+        //   params: {
+        //     username: values.username,
+        //   },
+        // })
+
+        // if (usernameResponse.data.length) {
+        //   toast({
+        //     position: "top",
+        //     title: "Username has already been used",
+        //     status: "error",
+        //   })
+        //   return
+        // }
+
+        // let newUser = {
+        //   username: values.username,
+        //   email: values.email,
+        //   password: values.password,
+        //   role: "user",
+        //   profile_picture: "",
+        // }
+        // await axiosInstance.post("./users", newUser)
+        const response = await axiosInstance.post("/auth/register", {
+>>>>>>> Stashed changes
+          username,
+          email,
+          password,
         })
+<<<<<<< Updated upstream
 
-        if (emailResponse.data.length) {
-          toast({
-            position: "top",
-            title: "Email has alreardy been used",
-            status: "error",
-          })
-          return
-        }
+        // if (emailResponse.data.length) {
+        //   toast({
+        //     position: "top",
+        //     title: "Email has alreardy been used",
+        //     status: "error",
+        //   })
+        //   return
+        // }
 
-        const usernameResponse = await axiosInstance.get("./users", {
-          params: {
-            username: values.username,
-          },
-        })
+        // const usernameResponse = await axiosInstance.get("./users", {
+        //   params: {
+        //     username: values.username,
+        //   },
+        // })
 
-        if (usernameResponse.data.length) {
-          toast({
-            position: "top",
-            title: "Username has already been used",
-            status: "error",
-          })
-          return
-        }
+        // if (usernameResponse.data.length) {
+        //   toast({
+        //     position: "top",
+        //     title: "Username has already been used",
+        //     status: "error",
+        //   })
+        //   return
+        // }
 
-        let newUser = {
-          username: values.username,
-          email: values.email,
-          password: values.password,
-          role: "user",
-          profile_picture: "",
-        }
-        await axiosInstance.post("./users", newUser)
+        // let newUser = {
+        //   username: values.username,
+        //   email: values.email,
+        //   password: values.password,
+        //   role: "user",
+        //   profile_picture: "",
+        // }
+        // await axiosInstance.post("./users", newUser)
 
+=======
+>>>>>>> Stashed changes
         toast({
+          title: "Registration successful",
           position: "top",
-          title: "Registration successfukl",
+<<<<<<< Updated upstream
+          description: response.data.mesagge,
+=======
+          title: "Registration successful",
+          description: response.data.message,
+>>>>>>> Stashed changes
           status: "success",
         })
       } catch (error) {
+        toast({
+          title: "Registration failed",
+          description: error.response.data.message,
+          status: "error",
+        })
         console.log(error)
+        toast({
+          position: "top",
+          title: "Registration Failed",
+          description: error.response.data.message,
+          status: "error",
+        })
       }
     },
     validationSchema: Yup.object({
@@ -121,12 +191,19 @@ const RegisterPage = () => {
               </FormControl>
               <FormControl isInvalid={formik.errors.password}>
                 <FormLabel>Password </FormLabel>
-                <Input
-                  value={formik.values.password}
-                  name="password"
-                  onChange={formChangeHandler}
-                  type={"password"}
-                />
+                <InputGroup>
+                  <Input
+                    value={formik.values.password}
+                    name="password"
+                    onChange={formChangeHandler}
+                    type={"password"}
+                  />
+                  <InputRightElement width="56px" mr="4px">
+                    <Button onClick={togglePassword} height="28px" size="sm">
+                      {showPassword ? "Hide" : "Show"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
               <Box py={"3"}>
