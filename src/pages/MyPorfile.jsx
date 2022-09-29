@@ -29,16 +29,17 @@ const MyProfile = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axiosInstance.get("/posts", {
-        params: {
-          userId: authSelector.id,
-          _expand: "user",
-          _sort: "id",
-          _order: "desc",
-        },
-      })
+      const response = await axiosInstance.get(
+        "/posts/me"
+        // params: {
+        //   userId: authSelector.id,
+        //   _expand: "user",
+        //   _sort: "id",
+        //   _order: "desc",
+        // },
+      )
 
-      setPosts(response.data)
+      setPosts(response.data.data)
     } catch (err) {
       console.log(err)
     }
@@ -60,10 +61,10 @@ const MyProfile = () => {
       return (
         <Post
           key={val.id.toString()}
-          username={val.user.username}
-          body={val.body}
+          username={val.User.username}
+          caption={val.caption}
           image_url={val.image_url}
-          userId={val.userId}
+          userId={val.UserId}
           onDelete={() => deleteBtnHandler(val.id)}
           postId={val.id}
         />
@@ -77,50 +78,34 @@ const MyProfile = () => {
       email: "",
       profile_picture: "",
     },
-    onSubmit: async (values) => {
+    onSubmit: async ({ username, email, profile_picture }) => {
       try {
-        const emailResponse = await axiosInstance.get("/users", {
-          params: {
-            email: values.email,
-          },
-        })
+        const userData = new FormData()
 
-        if (emailResponse.data.length && values.email !== authSelector.email) {
-          toast({ title: "Email has already been used", status: "error" })
-          return
+        if (username && username !== authSelector.username) {
+          userData.append("username", username)
         }
 
-        const usernameResponse = await axiosInstance.get("/users", {
-          params: {
-            username: values.username,
-          },
-        })
-
-        if (
-          usernameResponse.data.length &&
-          values.username !== authSelector.username
-        ) {
-          toast({ title: "Username has already been used", status: "error" })
-          return
+        if (email && email !== authSelector.email) {
+          userData.append("email", email)
         }
 
-        let newUser = {
-          username: values.username,
-          email: values.email,
-          profile_picture: values.profile_picture,
+        if (profile_picture) {
+          userData.append("profile_picture", profile_picture)
         }
 
-        await axiosInstance.patch(`/users/${authSelector.id}`, newUser)
+        const userResponse = await axiosInstance.patch("/auth/me", userData)
 
-        const userResponse = await axiosInstance.get(
-          `/users/${authSelector.id}`
-        )
-
-        dispatch(login(userResponse.data))
+        dispatch(login(userResponse.data.data))
         setEditMode(false)
         toast({ title: "Profile edited", status: "success" })
       } catch (error) {
         console.log(error)
+        toast({
+          title: "Failed edit",
+          status: "error",
+          description: error.response.data.message,
+        })
       }
     },
   })
@@ -133,10 +118,10 @@ const MyProfile = () => {
 
   useEffect(() => {
     fetchPosts()
-  }, [formik])
+  }, [])
 
   return (
-    <Box backgroundColor={"#fafafa"} mt="4">
+    <Box backgroundColor={"#fafafa"} mt="20">
       <Container maxW={"container.md"} py="4" pb={"10"}>
         <Box
           borderColor={"gray.300"}
@@ -150,7 +135,7 @@ const MyProfile = () => {
                 <Avatar
                   size="2xl"
                   name={authSelector.username}
-                  src={authSelector.profile_picture}
+                  src={authSelector.profile_picture_url}
                 />
 
                 {editMode ? (
@@ -174,9 +159,15 @@ const MyProfile = () => {
                     <FormControl>
                       <FormLabel>Profile Picture</FormLabel>
                       <Input
-                        onChange={formChangeHandler}
+                        accept="image/*"
+                        type={"file"}
+                        onChange={(event) =>
+                          formik.setFieldValue(
+                            "profile_picture",
+                            event.target.files[0]
+                          )
+                        }
                         name="profile_picture"
-                        defaultValue={authSelector.profile_picture}
                       />
                     </FormControl>
                   </Stack>

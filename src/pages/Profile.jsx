@@ -68,10 +68,10 @@ const ProfilePage = () => {
       return (
         <Post
           key={val.id.toString()}
-          username={val.user.username}
-          body={val.body}
+          username={val.User.username}
+          caption={val.caption}
           image_url={val.image_url}
-          userId={val.userId}
+          userId={val.UserId}
           onDelete={() => deleteBtnHandler(val.id)}
           postId={val.id}
         />

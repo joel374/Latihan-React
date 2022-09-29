@@ -14,7 +14,7 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { useFormik } from "formik"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { axiosInstance } from "../api"
 import * as Yup from "yup"
@@ -29,25 +29,26 @@ const NewPost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
 
+  const inputFileRef = useRef(null)
+
   const authSelector = useSelector((state) => state.auth)
 
   const formik = useFormik({
     initialValues: {
-      body: "",
-      image_url: "",
+      caption: "",
+      post_image: null,
     },
     onSubmit: async (values) => {
       try {
-        let newPosts = {
-          body: values.body,
-          image_url: values.image_url,
-          userId: authSelector.id,
-        }
+        let newPost = new FormData()
 
-        await axiosInstance.post("/posts", newPosts)
+        newPost.append("caption", values.caption)
+        newPost.append("post_image", values.post_image)
 
-        formik.setFieldValue("body", "")
-        formik.setFieldValue("image_url", "")
+        await axiosInstance.post("/posts", newPost)
+
+        formik.setFieldValue("caption", "")
+        formik.setFieldValue("post_image", null)
 
         toast({
           position: "top",
@@ -60,11 +61,6 @@ const NewPost = () => {
         console.log(error)
       }
     },
-    validationSchema: Yup.object({
-      body: Yup.string().required().min(6),
-      image_url: Yup.string().required().url(),
-    }),
-    validateOnChange: false,
   })
 
   const inputChangeHandler = ({ target }) => {
@@ -141,17 +137,29 @@ const NewPost = () => {
         <Stack mt={"4"} isOpen={isOpen} onClose={onClose}>
           <Textarea
             placeholder="Insert your caption here"
-            value={formik.values.body}
+            value={formik.values.caption}
             onChange={inputChangeHandler}
-            name="body"
+            name="caption"
           />
           <HStack>
             <Input
-              value={formik.values.image_url}
-              onChange={inputChangeHandler}
-              placeholder="Insert image URL"
-              name="image_url"
+              ref={inputFileRef}
+              display={"none"}
+              onChange={(event) => {
+                formik.setFieldValue("post_image", event.target.files[0])
+              }}
+              name="post_image"
+              type="file"
+              accept="image/*"
             />
+            <Button
+              onClick={() => {
+                inputFileRef.current.click()
+              }}
+              width="100%"
+            >
+              {formik?.values?.post_image?.name || "Upload Image"}
+            </Button>
             <Button
               onClick={formik.handleSubmit}
               isDisabled={formik.isSubmitting}

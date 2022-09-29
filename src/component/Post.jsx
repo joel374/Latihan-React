@@ -32,7 +32,7 @@ import "../App.css"
 
 const Post = ({
   username,
-  body,
+  caption,
   image_url,
   userId,
   onDelete,
@@ -145,7 +145,7 @@ const Post = ({
             </Text>
           </Link>
           <Text display={"inline"}>
-            {body ||
+            {caption ||
               "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architectovoluptas animi quis dolore officia quia quisquam sint quas ab dicta ut mollitia laboriosam sit officiis non, voluptatem nisi facere rem."}
           </Text>
         </HStack>

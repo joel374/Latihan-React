@@ -34,46 +34,46 @@ const HomePage = () => {
 
   const toast = useToast()
 
-  const formik = useFormik({
-    initialValues: {
-      body: "",
-      post_image: null,
-    },
-    onSubmit: async (values) => {
-      try {
-        let newPost = new FormData()
+  // const formik = useFormik({
+  //   initialValues: {
+  //     body: "",
+  //     post_image: null,
+  //   },
+  //   onSubmit: async (values) => {
+  //     try {
+  //       let newPost = new FormData()
 
-        newPost.append("body", values.body)
-        newPost.append("post_image", values.post_image)
+  //       newPost.append("body", values.body)
+  //       newPost.append("post_image", values.post_image)
 
-        await axiosInstance.post("/posts", newPost)
+  //       await axiosInstance.post("/posts", newPost)
 
-        formik.setFieldValue("body", "")
-        formik.setFieldValue("post_image", null)
+  //       formik.setFieldValue("body", "")
+  //       formik.setFieldValue("post_image", null)
 
-        toast({
-          position: "top",
-          title: "Post success",
-          status: "success",
-        })
+  //       toast({
+  //         position: "top",
+  //         title: "Post success",
+  //         status: "success",
+  //       })
 
-        fetchPost()
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    // validationSchema: Yup.object({
-    //   body: Yup.string().required().min(6),
-    //   image_url: Yup.string().required().url(),
-    // }),
-    // validateOnChange: false,
-  })
+  //       fetchPost()
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   },
+  // validationSchema: Yup.object({
+  //   body: Yup.string().required().min(6),
+  //   image_url: Yup.string().required().url(),
+  // }),
+  // validateOnChange: false,
+  // })
 
-  const inputChangeHandler = ({ target }) => {
-    const { name, value } = target
+  // const inputChangeHandler = ({ target }) => {
+  //   const { name, value } = target
 
-    formik.setFieldValue(name, value)
-  }
+  //   formik.setFieldValue(name, value)
+  // }
 
   const fetchPost = async () => {
     try {
@@ -95,7 +95,7 @@ const HomePage = () => {
       // } else {
       //   setPosts([...posts, ...response.data])
       // }
-      const response = await axiosInstance.get("/post", {
+      const response = await axiosInstance.get("/posts", {
         params: {
           _limit: 2,
           _page: page,
@@ -131,7 +131,7 @@ const HomePage = () => {
         <Post
           key={val.id.toString()}
           username={val.User.username}
-          body={val.body}
+          caption={val.caption}
           image_url={val.image_url}
           userId={val.UserId}
           onDelete={() => deleteBtnHandler(val.id)}
@@ -152,8 +152,7 @@ const HomePage = () => {
   return (
     <Box mt={"12"} className="background">
       <Container maxW={"container.md"} py="4" pb={"10"}>
-<<<<<<< Updated upstream
-        <HStack>
+        {/* <HStack>
           <Input
             ref={inputFileRef}
             display={"none"}
@@ -171,6 +170,8 @@ const HomePage = () => {
             width="100%"
           >
             {formik?.values?.post_image?.name || "Upload Image"}
+            status: "error", title: "Login failed", description:
+            err.response.data.message,{" "}
           </Button>
           <Button
             onClick={formik.handleSubmit}
@@ -179,9 +180,8 @@ const HomePage = () => {
           >
             Post
           </Button>
-        </HStack>
-=======
->>>>>>> Stashed changes
+        </HStack> */}
+
         <Stack mt={"8"} spacing="4">
           {renderPosts()}
 

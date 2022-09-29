@@ -34,54 +34,49 @@ const RegisterPage = () => {
     },
     onSubmit: async ({ username, email, password }) => {
       try {
-<<<<<<< Updated upstream
         const response = await axiosInstance.post("./auth/register", {
-=======
-        // const emailResponse = await axiosInstance.get("./users", {
-        //   params: {
-        //     email: values.email,
-        //   },
-        // })
+          // const emailResponse = await axiosInstance.get("./users", {
+          //   params: {
+          //     email: values.email,
+          //   },
+          // })
 
-        // if (emailResponse.data.length) {
-        //   toast({
-        //     position: "top",
-        //     title: "Email has alreardy been used",
-        //     status: "error",
-        //   })
-        //   return
-        // }
+          // if (emailResponse.data.length) {
+          //   toast({
+          //     position: "top",
+          //     title: "Email has alreardy been used",
+          //     status: "error",
+          //   })
+          //   return
+          // }
 
-        // const usernameResponse = await axiosInstance.get("./users", {
-        //   params: {
-        //     username: values.username,
-        //   },
-        // })
+          // const usernameResponse = await axiosInstance.get("./users", {
+          //   params: {
+          //     username: values.username,
+          //   },
+          // })
 
-        // if (usernameResponse.data.length) {
-        //   toast({
-        //     position: "top",
-        //     title: "Username has already been used",
-        //     status: "error",
-        //   })
-        //   return
-        // }
+          // if (usernameResponse.data.length) {
+          //   toast({
+          //     position: "top",
+          //     title: "Username has already been used",
+          //     status: "error",
+          //   })
+          //   return
+          // }
 
-        // let newUser = {
-        //   username: values.username,
-        //   email: values.email,
-        //   password: values.password,
-        //   role: "user",
-        //   profile_picture: "",
-        // }
-        // await axiosInstance.post("./users", newUser)
-        const response = await axiosInstance.post("/auth/register", {
->>>>>>> Stashed changes
+          // let newUser = {
+          //   username: values.username,
+          //   email: values.email,
+          //   password: values.password,
+          //   role: "user",
+          //   profile_picture: "",
+          // }
+
           username,
           email,
           password,
         })
-<<<<<<< Updated upstream
 
         // if (emailResponse.data.length) {
         //   toast({
@@ -115,33 +110,20 @@ const RegisterPage = () => {
         //   profile_picture: "",
         // }
         // await axiosInstance.post("./users", newUser)
-
-=======
->>>>>>> Stashed changes
         toast({
           title: "Registration successful",
           position: "top",
-<<<<<<< Updated upstream
           description: response.data.mesagge,
-=======
-          title: "Registration successful",
-          description: response.data.message,
->>>>>>> Stashed changes
           status: "success",
         })
       } catch (error) {
-        toast({
-          title: "Registration failed",
-          description: error.response.data.message,
-          status: "error",
-        })
-        console.log(error)
         toast({
           position: "top",
           title: "Registration Failed",
           description: error.response.data.message,
           status: "error",
         })
+        console.log(error)
       }
     },
     validationSchema: Yup.object({

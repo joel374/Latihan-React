@@ -37,8 +37,6 @@ const LoginPage = () => {
     },
     onSubmit: async ({ usernameOrEmail, password }) => {
       try {
-<<<<<<< Updated upstream
-=======
         // const response = await axiosInstance.get("/users", {
         //   params: {
         //     usernameOrEmail: values.usernameOrEmail,
@@ -53,14 +51,11 @@ const LoginPage = () => {
         //   })
         //   return
         // }
-
->>>>>>> Stashed changes
         const response = await axiosInstance.post("/auth/login", {
           usernameOrEmail,
           password,
         })
 
-<<<<<<< Updated upstream
         // if (!response.data.length) {
         //   toast({
         //     position: "top",
@@ -79,37 +74,17 @@ const LoginPage = () => {
           })
         )
         toast({
-          title: "Login successful",
-=======
-        localStorage.setItem("auth_token", response.data.token)
-        dispatch(
-          login({
-            username: response.data.data.username,
-            email: response.data.data.email,
-            id: response.data.data.id,
-          })
-        )
-
-        toast({
+          title: "Registration successful",
           position: "top",
-          title: "Registration Success",
->>>>>>> Stashed changes
-          description: response.data.message,
+          description: response.data.mesagge,
           status: "success",
         })
       } catch (error) {
         console.log(error)
         toast({
-<<<<<<< Updated upstream
           status: "error",
           title: "Login failed",
           description: error.response.data.message,
-=======
-          position: "top",
-          title: "Registration Failed",
-          description: error.response.data.message,
-          status: "error",
->>>>>>> Stashed changes
         })
       }
     },
@@ -135,11 +110,7 @@ const LoginPage = () => {
           <form onSubmit={formik.handleSubmit}>
             <Stack>
               <FormControl isInvalid={formik.errors.usernameOrEmail}>
-<<<<<<< Updated upstream
-                <FormLabel>Username Or Email</FormLabel>
-=======
-                <FormLabel>usernameOrEmail</FormLabel>
->>>>>>> Stashed changes
+                <FormLabel>Username or Email</FormLabel>
                 <Input
                   value={formik.values.usernameOrEmail}
                   name="usernameOrEmail"
@@ -150,7 +121,7 @@ const LoginPage = () => {
                 </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={formik.errors.password}>
-                <FormLabel>Password </FormLabel>
+                <FormLabel>Password</FormLabel>
                 <InputGroup>
                   <Input
                     value={formik.values.password}
