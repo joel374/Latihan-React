@@ -1,3 +1,7 @@
+.heroColor{
+    background-color: #C37B89;
+}
+
 @media screen and  (max-width:480px){
     .mobilePost{
         height: 70%;

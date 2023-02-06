@@ -5,7 +5,7 @@ const initialState = {
   username: "",
   email: "",
   // role: "",
-  profile_picture: "",
+  profile_picture_url: "",
 }
 
 const authSlice = createSlice({
@@ -13,7 +13,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      console.log(action.payload)
       state.id = action.payload.id
       state.username = action.payload.username
       state.email = action.payload.email
@@ -23,7 +22,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.id = 0
       state.username = ""
-      state.role = ""
+      // state.role = ""
       state.email = ""
       state.profile_picture_url = ""
     },

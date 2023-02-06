@@ -5,7 +5,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Heading,
   Input,
   InputGroup,
   InputRightElement,
@@ -13,7 +12,6 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react"
-import { text } from "@fortawesome/fontawesome-svg-core"
 import { useFormik } from "formik"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
@@ -37,33 +35,12 @@ const LoginPage = () => {
     },
     onSubmit: async ({ usernameOrEmail, password }) => {
       try {
-        // const response = await axiosInstance.get("/users", {
-        //   params: {
-        //     usernameOrEmail: values.usernameOrEmail,
-        //     password: values.password,
-        //   },
-        // })
-        // if (!response.data.length) {
-        //   toast({
-        //     position: "top",
-        //     title: "Credentials don't match",
-        //     status: "error",
-        //   })
-        //   return
-        // }
         const response = await axiosInstance.post("/auth/login", {
           usernameOrEmail,
           password,
         })
 
-        // if (!response.data.length) {
-        //   toast({
-        //     position: "top",
-        //     title: "Credentials don't match",
-        //     status: "error",
-        //   })
-        //   return
-        // }
+        console.log(response)
 
         localStorage.setItem("auth_token", response.data.token)
         dispatch(
@@ -74,9 +51,9 @@ const LoginPage = () => {
           })
         )
         toast({
-          title: "Registration successful",
+          title: "Login successful",
           position: "top",
-          description: response.data.mesagge,
+          description: response.data.message,
           status: "success",
         })
       } catch (error) {
@@ -101,11 +78,11 @@ const LoginPage = () => {
   }
 
   return (
-    <Box backgroundColor={"#fafafa"}>
+    <Box backgroundColor={"#fafafa"} h="91vh">
       <Container maxW={"container.md"} py="4" pb={"10"}>
-        <Heading fontSize={"4xl"} fontWeight={"light"} mb="4">
+        <Text fontSize={"4xl"} fontWeight={"light"} textAlign="center">
           Login
-        </Heading>
+        </Text>
         <Box padding="6" width={"600px"} mx={"auto"}>
           <form onSubmit={formik.handleSubmit}>
             <Stack>
@@ -114,6 +91,7 @@ const LoginPage = () => {
                 <Input
                   value={formik.values.usernameOrEmail}
                   name="usernameOrEmail"
+                  placeholder="Input your username or email"
                   onChange={formChangeHandler}
                 />
                 <FormErrorMessage>
@@ -126,6 +104,7 @@ const LoginPage = () => {
                   <Input
                     value={formik.values.password}
                     name="password"
+                    placeholder="Input your password"
                     onChange={formChangeHandler}
                     type={showPassword ? "text" : "password"}
                   />
@@ -138,7 +117,13 @@ const LoginPage = () => {
                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
               <Box py={"3"}>
-                <Button colorScheme={"teal"} type={"submit"}>
+                <Button
+                  bgColor={"#C37B89"}
+                  _hover={false}
+                  _active={false}
+                  color="white"
+                  type={"submit"}
+                >
                   Login
                 </Button>
               </Box>

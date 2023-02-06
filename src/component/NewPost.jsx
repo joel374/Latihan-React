@@ -56,7 +56,7 @@ const NewPost = () => {
           status: "success",
         })
 
-        fetchPost()
+        fetchPosts()
       } catch (error) {
         console.log(error)
       }
@@ -69,24 +69,22 @@ const NewPost = () => {
     formik.setFieldValue(name, value)
   }
 
-  const fetchPost = async () => {
+  const fetchPosts = async () => {
     try {
       const response = await axiosInstance.get("/posts", {
         params: {
-          _expand: "user",
-          _sort: "id",
-          _order: "desc",
-          _limit: "2",
+          _limit: 2,
           _page: page,
+          _sortDir: "DESC",
         },
       })
 
-      setTotalCount(response.headers["x-total-count"])
+      setTotalCount(response.data.dataCount)
 
       if (page === 1) {
-        setPosts(response.data)
+        setPosts(response.data.data)
       } else {
-        setPosts([...posts, ...response.data])
+        setPosts([...posts, ...response.data.data])
       }
     } catch (err) {
       console.log(err)
@@ -96,7 +94,7 @@ const NewPost = () => {
   const deleteBtnHandler = async (id) => {
     try {
       await axiosInstance.delete(`/posts/${id}`)
-      fetchPost()
+      fetchPosts()
       toast({ position: "top", title: "Post deleted", status: "info" })
     } catch (error) {
       console.log(error)
@@ -126,7 +124,7 @@ const NewPost = () => {
   }
 
   useEffect(() => {
-    fetchPost()
+    fetchPosts()
   }, [page])
 
   return (

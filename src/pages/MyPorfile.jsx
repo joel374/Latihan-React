@@ -5,7 +5,9 @@ import {
   Container,
   FormControl,
   FormLabel,
+  Grid,
   HStack,
+  Image,
   Input,
   Stack,
   Text,
@@ -15,7 +17,6 @@ import { useFormik } from "formik"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { axiosInstance } from "../api"
-import Post from "../component/Post"
 import { login } from "../redux/features/authSlice"
 
 const MyProfile = () => {
@@ -29,15 +30,7 @@ const MyProfile = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axiosInstance.get(
-        "/posts/me"
-        // params: {
-        //   userId: authSelector.id,
-        //   _expand: "user",
-        //   _sort: "id",
-        //   _order: "desc",
-        // },
-      )
+      const response = await axiosInstance.get("/posts/me")
 
       setPosts(response.data.data)
     } catch (err) {
@@ -57,19 +50,11 @@ const MyProfile = () => {
   }
 
   const renderPosts = () => {
-    return posts.map((val) => {
-      return (
-        <Post
-          key={val.id.toString()}
-          username={val.User.username}
-          caption={val.caption}
-          image_url={val.image_url}
-          userId={val.UserId}
-          onDelete={() => deleteBtnHandler(val.id)}
-          postId={val.id}
-        />
-      )
-    })
+    return posts
+      .map((val) => {
+        return <Image src={val.image_url} h="244px" objectFit="cover" />
+      })
+      .reverse()
   }
 
   const formik = useFormik({
@@ -121,7 +106,7 @@ const MyProfile = () => {
   }, [])
 
   return (
-    <Box backgroundColor={"#fafafa"} mt="20">
+    <Box backgroundColor={"#fafafa"}>
       <Container maxW={"container.md"} py="4" pb={"10"}>
         <Box
           borderColor={"gray.300"}
@@ -129,7 +114,7 @@ const MyProfile = () => {
           p={"6"}
           borderRadius={"8px"}
         >
-          <Box mt={"4"}>
+          <Box>
             <Stack>
               <HStack gap={"10"}>
                 <Avatar
@@ -201,10 +186,9 @@ const MyProfile = () => {
             )}
           </Box>
         </Box>
-
-        <Stack mt={"5"} spacing="5">
+        <Grid templateColumns={"repeat(3, 1fr)"} gap="2px">
           {renderPosts()}
-        </Stack>
+        </Grid>
       </Container>
     </Box>
   )

@@ -5,7 +5,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Heading,
   Input,
   InputGroup,
   InputRightElement,
@@ -34,82 +33,11 @@ const RegisterPage = () => {
     },
     onSubmit: async ({ username, email, password }) => {
       try {
-        const response = await axiosInstance.post("./auth/register", {
-          // const emailResponse = await axiosInstance.get("./users", {
-          //   params: {
-          //     email: values.email,
-          //   },
-          // })
-
-          // if (emailResponse.data.length) {
-          //   toast({
-          //     position: "top",
-          //     title: "Email has alreardy been used",
-          //     status: "error",
-          //   })
-          //   return
-          // }
-
-          // const usernameResponse = await axiosInstance.get("./users", {
-          //   params: {
-          //     username: values.username,
-          //   },
-          // })
-
-          // if (usernameResponse.data.length) {
-          //   toast({
-          //     position: "top",
-          //     title: "Username has already been used",
-          //     status: "error",
-          //   })
-          //   return
-          // }
-
-          // let newUser = {
-          //   username: values.username,
-          //   email: values.email,
-          //   password: values.password,
-          //   role: "user",
-          //   profile_picture: "",
-          // }
-
+        const response = await axiosInstance.post("/auth/register", {
           username,
           email,
           password,
         })
-
-        // if (emailResponse.data.length) {
-        //   toast({
-        //     position: "top",
-        //     title: "Email has alreardy been used",
-        //     status: "error",
-        //   })
-        //   return
-        // }
-
-        // const usernameResponse = await axiosInstance.get("./users", {
-        //   params: {
-        //     username: values.username,
-        //   },
-        // })
-
-        // if (usernameResponse.data.length) {
-        //   toast({
-        //     position: "top",
-        //     title: "Username has already been used",
-        //     status: "error",
-        //   })
-        //   return
-        // }
-
-        // let newUser = {
-        //   username: values.username,
-        //   email: values.email,
-        //   password: values.password,
-        //   role: "user",
-        //   profile_picture: "",
-        // }
-        // await axiosInstance.post("./users", newUser)
         toast({
           title: "Registration successful",
           position: "top",
@@ -144,11 +72,11 @@ const RegisterPage = () => {
     formik.setFieldValue(name, value)
   }
   return (
-    <Box backgroundColor={"#fafafa"}>
+    <Box backgroundColor={"#fafafa"} h="91vh">
       <Container maxW={"container.md"} py="4" pb={"10"}>
-        <Heading fontSize={"4xl"} fontWeight={"light"} mb={"4"}>
-          Register User
-        </Heading>
+        <Text fontSize={"4xl"} fontWeight={"light"} textAlign="center">
+          Register
+        </Text>
         <Box padding="6" width={"600px"} mx={"auto"}>
           <form onSubmit={formik.handleSubmit}>
             <Stack>
@@ -161,6 +89,7 @@ const RegisterPage = () => {
                 />
                 <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
               </FormControl>
+
               <FormControl isInvalid={formik.errors.email}>
                 <FormLabel>Email</FormLabel>
                 <Input
@@ -171,6 +100,7 @@ const RegisterPage = () => {
                 />
                 <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
+
               <FormControl isInvalid={formik.errors.password}>
                 <FormLabel>Password </FormLabel>
                 <InputGroup>
@@ -178,7 +108,7 @@ const RegisterPage = () => {
                     value={formik.values.password}
                     name="password"
                     onChange={formChangeHandler}
-                    type={"password"}
+                    type={showPassword ? "text" : "password"}
                   />
                   <InputRightElement width="56px" mr="4px">
                     <Button onClick={togglePassword} height="28px" size="sm">
